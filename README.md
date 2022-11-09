@@ -18,10 +18,10 @@ samples, guidance on mobile development, and a full API reference.
 <table align = center>
   <tr>
     <td>
-          <img src="preview/1.png" width="330" height="650" />  
+          <img src="preview/1.png" width="320" height="650" />  
   </td>
       <td>
-            <img src="preview/2.png" width="300" height="650" />
+            <img src="preview/2.png" width="320" height="650" />
   </td>
 
   <td>

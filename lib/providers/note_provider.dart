@@ -15,6 +15,16 @@ class NoteProvider with ChangeNotifier {
     description: 'description',
     createTime: DateTime.now(),
   );
+
+  int _viewnoteid = 0;
+  int get viewnoteid => _viewnoteid;
+
+  set viewnoteid(int id) {
+    _viewnoteid = id;
+    readNote(id);
+    notifyListeners();
+  }
+
   NoteModel get single_data => _single_data;
 
   set single_data(NoteModel noteModel) {
@@ -56,9 +66,9 @@ class NoteProvider with ChangeNotifier {
   Future<NoteModel> readNote(int value) async {
     var db = NotesDatabase.instance;
     var values = await db.readNote(value);
-    single_data = values;
+    _single_data = values;
     // log(values.toMap().toString());
-    notifyListeners();
+    // notifyListeners();
     return values;
   }
 

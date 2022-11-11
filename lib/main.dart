@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:math';
 
+import 'package:demo2/models/note_model.dart';
 import 'package:demo2/providers/note_provider.dart';
 import 'package:demo2/screen/notes_pages.dart';
 import 'package:demo2/screen/test.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'db/note_db.dart';
 import 'screen/addnote.dart';
 import 'screen/note_detailes.dart';
 import 'theme_data.dart';
@@ -34,6 +36,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     checktheme();
+
     super.initState();
   }
 
@@ -74,14 +77,26 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     context.read<NoteProvider>().getData;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         actions: [
-          const Padding(
-            padding: EdgeInsets.only(top: 3.0),
-            child: Icon(Icons.search_outlined),
-          ),
+          IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: MySearchDeligate(),
+                );
+              },
+              icon: Icon(Icons.search)),
+          // InkWell(
+          //   onTap: () {},
+          //   child: const Padding(
+          //     padding: EdgeInsets.only(top: 3.0),
+          //     child: Icon(Icons.search_outlined),
+          //   ),
+          // ),
           const SizedBox(
             width: 5,
           ),
@@ -245,6 +260,94 @@ class _HomePageState extends State<HomePage> {
         // backgroundColor: Colors.red,
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class MySearchDeligate extends SearchDelegate {
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: const Icon(Icons.arrow_back),
+      );
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, null);
+            }
+            query = '';
+          },
+          icon: Icon(Icons.clear),
+        )
+      ];
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Column(
+      children: [
+        Text('Results'),
+        Expanded(
+          child: ListView.builder(
+            itemCount: context.watch<NoteProvider>().listData.length,
+            itemBuilder: (context, index) {
+              final suggestion = context.watch<NoteProvider>().listData[index];
+              return ListTile(
+                  title: Text(suggestion.description),
+                  onTap: () async {
+                    context.read<NoteProvider>().viewnoteid = suggestion.id!;
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => NoteDetails(),
+                      ),
+                    );
+                  });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<NoteModel> search = query.isEmpty
+        ? context.watch<NoteProvider>().data
+        : context.read<NoteProvider>().listData =
+            context.watch<NoteProvider>().data.where(
+            (element) {
+              return element.description.contains(query);
+            },
+          ).toList();
+    return Column(
+      children: [
+        const Text('Suggestions'),
+        Expanded(
+          child: ListView.builder(
+            itemCount: search.length,
+            itemBuilder: (context, index) {
+              final suggestion = search[index];
+              return ListTile(
+                title: Text(suggestion.description),
+                onTap: () {
+                  // context.read<NoteProvider>().viewnoteid = suggestion.id!;
+                  // await Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => NoteDetails(),
+                  //   ),
+                  // );
+                  query = suggestion.description;
+                  showResults(context);
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

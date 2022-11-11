@@ -1,4 +1,5 @@
 import 'dart:developer';
+// import 'dart:math';
 
 import 'package:demo2/db/note_db.dart';
 import 'package:demo2/models/note_model.dart';
@@ -10,6 +11,17 @@ class NoteProvider with ChangeNotifier {
   bool get isloading => _isloading;
 
   List<NoteModel> _data = [];
+
+  List<NoteModel> _listData = [];
+  List<NoteModel> get listData => _listData;
+
+  set listData(List<NoteModel> noteModel) {
+    _listData = [];
+    for (var element in noteModel) {
+      _listData.add(element);
+    }
+  }
+
   NoteModel _single_data = NoteModel(
     title: 'title',
     description: 'description',

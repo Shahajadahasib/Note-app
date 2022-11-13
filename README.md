@@ -24,8 +24,13 @@ samples, guidance on mobile development, and a full API reference.
             <img src="preview/2.png" width="310" height="630" />
   </td>
 
-  <td>
+  </tr>
+  <tr>
+   <td>
             <img src="preview/3.png" width="310" height="630" />
+  </td>
+   <td>
+            <img src="preview/4.png" width="310" height="630" />
   </td>
   </tr>
     </table>

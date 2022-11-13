@@ -1,11 +1,9 @@
-import 'dart:developer';
-
-import 'package:demo2/db/note_db.dart';
-import 'package:demo2/models/note_model.dart';
-import 'package:demo2/providers/note_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import '../models/note_model.dart';
+import '../providers/note_provider.dart';
 
 class AddNotes extends StatefulWidget {
   const AddNotes({super.key});
@@ -44,7 +42,8 @@ class _MyWidgetState extends State<AddNotes> {
                           fontSize: 20,
                         ),
                       ),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
                     ),
                   ),
                 ),
@@ -60,7 +59,7 @@ class _MyWidgetState extends State<AddNotes> {
                       context.read<NoteProvider>().createnote(data);
                       Navigator.pop(context);
                     },
-                    icon: Icon(Icons.save))
+                    icon: const Icon(Icons.save))
               ],
             ),
             // TextFormField(
@@ -86,9 +85,9 @@ class _MyWidgetState extends State<AddNotes> {
                 decoration: InputDecoration(
                   hintText: "Write down your note here",
                   hintStyle: GoogleFonts.lobster(
-                    textStyle: TextStyle(fontSize: 30),
+                    textStyle: const TextStyle(fontSize: 30),
                   ),
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
                 ),
               ),
             ),

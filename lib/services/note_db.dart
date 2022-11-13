@@ -1,8 +1,7 @@
-import 'dart:developer';
-
-import 'package:demo2/models/note_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import '../models/note_model.dart';
 
 class NotesDatabase {
   static final NotesDatabase instance = NotesDatabase._init();

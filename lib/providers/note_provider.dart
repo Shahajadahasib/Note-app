@@ -1,13 +1,10 @@
-import 'dart:developer';
-// import 'dart:math';
-
-import 'package:demo2/db/note_db.dart';
-import 'package:demo2/models/note_model.dart';
-import 'package:demo2/screen/note_detailes.dart';
 import 'package:flutter/material.dart';
 
+import '../models/note_model.dart';
+import '../services/note_db.dart';
+
 class NoteProvider with ChangeNotifier {
-  bool _isloading = false;
+  final bool _isloading = false;
   bool get isloading => _isloading;
 
   List<NoteModel> _data = [];
@@ -20,6 +17,8 @@ class NoteProvider with ChangeNotifier {
     for (var element in noteModel) {
       _listData.add(element);
     }
+
+    notifyListeners();
   }
 
   NoteModel _single_data = NoteModel(
@@ -61,8 +60,6 @@ class NoteProvider with ChangeNotifier {
     } catch (e) {
       e.toString();
     }
-    log('get data');
-    // log(_data.toString());
 
     notifyListeners();
   }
@@ -70,7 +67,7 @@ class NoteProvider with ChangeNotifier {
   void createnote(NoteModel noteModel) async {
     var db = NotesDatabase.instance;
     await db.create(noteModel);
-    log('Created note ${noteModel.toMap()}');
+
     getData;
     notifyListeners();
   }
@@ -79,8 +76,7 @@ class NoteProvider with ChangeNotifier {
     var db = NotesDatabase.instance;
     var values = await db.readNote(value);
     _single_data = values;
-    // log(values.toMap().toString());
-    // notifyListeners();
+
     return values;
   }
 
@@ -89,6 +85,5 @@ class NoteProvider with ChangeNotifier {
     var updatevalue = await db.update(noteModel);
     getData;
     notifyListeners();
-    log(updatevalue.toString());
   }
 }
